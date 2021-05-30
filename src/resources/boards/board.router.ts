@@ -5,7 +5,7 @@ import boardService from './board.service';
 
 const router = Router();
 
-router.route('/').get(async (req: Request, res: Response) => {
+router.route('/').get(async (_req: Request, res: Response) => {
   const boards = await boardService.getAll();
   res.json(boards.map(Board.toResponse));
 });

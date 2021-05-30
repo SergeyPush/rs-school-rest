@@ -52,7 +52,7 @@ const createTask = async (task: Task) => tasks.push(task);
  * @param  {string} taskId Id of a task to be deleted
  * @returns {array} List of all tasks
  */
-const deleteTask = async (boardId: string, taskId: string) => {
+const deleteTask = async (_boardId: string, taskId: string) => {
   tasks = tasks.filter((task) => task.id !== taskId);
   return tasks;
 };
