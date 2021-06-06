@@ -1,16 +1,18 @@
-const router = require('express').Router({ mergeParams: true });
-const Board = require('./board.model');
+import { Router, Request, Response } from 'express';
 
-const boardService = require('./board.service');
+import Board from './board.model';
+import boardService from './board.service';
 
-router.route('/').get(async (req, res) => {
+const router = Router();
+
+router.route('/').get(async (_req: Request, res: Response) => {
   const boards = await boardService.getAll();
   res.json(boards.map(Board.toResponse));
 });
 
 router.route('/:id').get(async (req, res) => {
   const { id } = req.params;
-  const board = await boardService.getOne(id);
+  const board = await boardService.getOne(id as string);
 
   if (!board) {
     return res.status(404).json({ message: 'Not Found' });
@@ -21,26 +23,26 @@ router.route('/:id').get(async (req, res) => {
 router.route('/').post(async (req, res) => {
   const { title, columns } = req.body;
   const board = new Board({ title, columns });
-  const createdUser = await boardService.createOne(board);
-  return res.status(201).json(Board.toResponse(createdUser));
+  const createdBoard = await boardService.createOne(board);
+  return res.status(201).json(Board.toResponse(createdBoard as Board));
 });
 
 router.route('/:id').put(async (req, res) => {
   const { id } = req.params;
-  const board = await boardService.getOne(id);
-  const updatedUser = await boardService.updateOne(board, req.body);
-  res.status(200).json(Board.toResponse(updatedUser));
+  const board = await boardService.getOne(id as string);
+  const updatedBoard = await boardService.updateOne(board as Board, req.body);
+  res.status(200).json(Board.toResponse(updatedBoard as Board));
 });
 
 router.route('/:id').delete(async (req, res) => {
   const { id } = req.params;
-  const board = await boardService.getOne(id);
+  const board = await boardService.getOne(id as string);
   if (!board) {
     return res.status(404).json({ message: 'Not Found' });
   }
-  const boards = await boardService.deleteOne(id);
+  const boards = await boardService.deleteOne(id as string);
   return boards
     ? res.status(200).json(boards.map(Board.toResponse))
     : res.status(404).json({ message: 'Not Found' });
 });
-module.exports = router;
+export default router;
