@@ -2,7 +2,7 @@ import { Router, Request, Response } from 'express';
 import usersService from './user.service';
 import User from './user.model';
 
-const router = Router();
+const router = Router({ mergeParams: true });
 
 router.route('/').get(async (_req: Request, res: Response) => {
   const users = await usersService.getAll();
@@ -13,6 +13,9 @@ router.route('/:id').get(async (req: Request, res: Response) => {
   const { id } = req.params;
 
   const user = await usersService.getOne(id as string);
+  if (!user) {
+    return res.json({ message: 'No such user' });
+  }
   return res.json(User.toResponse(user as User));
 });
 
