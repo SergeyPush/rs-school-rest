@@ -70,3 +70,21 @@ npm run lint
 Press <kbd>F5</kbd> to debug.
 
 For more information, visit: https://code.visualstudio.com/docs/editor/debugging
+
+## Run App in Docker
+
+If you want to run app in docker containers, Install Docker and run command from root folder:
+
+```
+docker compose up
+```
+
+or in detached mode
+
+```
+docker compose up -d
+```
+
+All required images will be downloaded and configured
+
+App will start with address http://localhost:4000
